@@ -9,15 +9,15 @@
   </head>
   <body>
     <div class="container">
-      <form action="game.html" class="form">
+      <form action="game.html" method="get" class="form">
         <label for="">enter the game level</label>
         <select name="level" id="">
-          <option value="level1">level 1</option>
-          <option value="level2">level 2</option>
-          <option value="level3">level 3</option>
+          <option value="level 1">level 1</option>
+          <option value="level 2">level 2</option>
+          <option value="level 3">level 3</option>
         </select>
-        <input type="text" placeholder="enter the user name" />
-        <button>Go</button>
+        <input type="text" placeholder="enter the user name" name="userName" />
+        <button class="goBtn">Go</button>
       </form>
       <div id="points">
         <div class="title">game bird shooting points</div>
@@ -32,6 +32,11 @@
         </div>
       </div>
     </div>
-    <script src="main.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

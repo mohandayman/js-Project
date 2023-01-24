@@ -73,12 +73,12 @@ body > div > form > input[type="text"] {
   text-align: center;
   border: 1px solid #fff;
   padding: 5px;
-
 }
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #fff;
-    opacity: .5; /* Firefox */
-  }
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #fff;
+  opacity: 0.5; /* Firefox */
+}
 body > div > form > button {
   background-color: transparent;
   margin: 0px 0 10px;
@@ -97,21 +97,80 @@ body > div > form > button {
   align-items: center;
   margin-bottom: 10px;
 }
-#points > div > span{
-    font-size: 25px;
-    font-weight: bold;
+#points > div > span {
+  font-size: 25px;
+  font-weight: bold;
 }
-#points > div.gray > span{
-    color: blue;
+#points > div.gray > span {
+  color: blue;
 }
-#points > div.black > span{
-    color: yellow;
+#points > div.black > span {
+  color: yellow;
 }
-#points > div.blue > span{
-    color: red
+#points > div.blue > span {
+  color: red;
 }
-.title{
-    font-size: 30px;
-    font-weight: bold;
-    margin: 5px;
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 5px;
+}
+#massege {
+  width: 40%;
+  height: 30%;
+  background-color: rgb(158 158 158 / 50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1px solid gray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#massege > button {
+  background-color: transparent;
+  margin: 0px 0 10px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  position: relative;
+  margin: 30px;
+}
+#massege > p {
+  padding: 20px;
+}
+.timerContainer {
+  background-color: rgb(158 158 158 / 50%);
+  display: flex;
+  border: 1px solid gray;
+  padding: 10px;
+  border-radius: 20px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.header {
+  background-color: rgb(158 158 158 / 50%);
+  border: 1px solid gray;
+  border-radius: 20px;
+ 
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+body > ul > li:nth-child(3){
+    left: calc(100% - 300px)
+}
+body > ul{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+#gameArea > img{
+  width: 200px;
+  position: absolute;
 }
