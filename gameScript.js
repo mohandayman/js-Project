@@ -56,15 +56,35 @@ $(function () {
       }
     }, 500);
 
-    
     killBird();
 
-    const bomb1 = new bomb();
-    bomb1.img.click(function(e){
-      bomb1.explosion();
-      console.log ( this.offsetTop);
+    setInterval(() => {
+      
+    
 
-    })
+    const bomb1 = new bomb();
+    bomb1.img.click(function (e) {
+      bomb1.explosion();
+     
+
+      let birds = $("#gameArea img");
+
+      let killedBirds = Array.from(birds).filter((el) => {
+      
+        return (
+          el.offsetLeft <= this.offsetLeft + 300 &&
+          el.offsetLeft >= this.offsetLeft - 300 &&
+          el.offsetTop <= this.offsetTop + 300 &&
+          el.offsetTop >= this.offsetTop - 300
+        );
+      });
+      console.log(killedBirds);
+      killedBirds.forEach(function (ele) {
+        killOneBird(ele);
+      });
+      this.remove();
+    });
+  }, 5000);
   });
 });
 ///////////////////////////////////////////////////////////////////////     End Of Mian Function
@@ -98,7 +118,7 @@ const moveBird = (imgObj) => {
       } else {
         imgObj.remove();
       }
-    }, 100);
+    }, 50);
   } else {
     clearInterval(id);
   }
@@ -177,17 +197,16 @@ class bomb {
     this.top = -100;
 
     this.img =
-      $(`<img id="bomb" src="./images/bomb.gif" width="100px" height="100px"  style="position: absolute; left:${this.left}px;" >
+      $(`<img id="bomb" src="./images/bomb.gif" width="100px" height="100px"  style="position: absolute; left:${this.left}px; top:${this.top}px;" >
     `).insertBefore($("#gameArea"));
 
     if (menuteObj.value) {
-     
       var id = setInterval(() => {
         if (this.top <= window.innerHeight + this.img.height()) {
-         this.top += 10;
-  
+          this.top += 10;
+
           this.img.css({ top: `${this.top}px` });
-  
+
           $("html, body").css({
             overflow: "hidden",
           });
@@ -198,22 +217,14 @@ class bomb {
     } else {
       clearInterval(id);
     }
-    
   }
 
-
-  explosion (){
-
+  explosion() {
     console.log("mohand");
-
   }
-  
-
- 
 }
 
-let killOneBird = function(bird){
-
+let killOneBird = function (bird) {
   switch (bird.src) {
     case "http://127.0.0.1:5500/images/3.gif":
       score += 5;
@@ -230,7 +241,5 @@ let killOneBird = function(bird){
   }
   scoreElement.text(`score :  ${score}`);
   birdsKilled.text(`Birds Killed :   ${numberKilled}`);
-  this.remove();
-
-}
-
+  bird.remove();
+};
