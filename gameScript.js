@@ -13,7 +13,7 @@ let score = 0;
 
 let numberKilled = 0;
 
-let bird = $("#gameArea > img");
+// let bird = $("#gameArea > img");
 
 let counterShow = $(
   `<li class="timerContainer"><div>time limit : </div><div id ='counter'> ${menuteObj.value}</div></li>`
@@ -27,6 +27,7 @@ let birdsKilled = $(
 
 let scoreElement = $(`<li class="header" > score :  ${score}</li> `);
 
+//////////////////////////////////////////////////////////////////////    The Main Function
 $(function () {
   // on page load
   $("#massege > p").text(
@@ -42,21 +43,31 @@ $(function () {
     $("ul").append(birdsKilled);
 
     $(screenName).after(scoreElement);
+
     let time = timer(menuteObj);
+
     $("ul").after(`<div id="gameArea" ></div>`);
-    $("#gameArea").append(`<img src="./images/blackBird.gif" alt="">`);
-    let bird = $("#gameArea > img");
 
-    moveBird(bird);
-    // while(menuteObj.value){
-    // setInterval(() => {
+    let id = setInterval(() => {
+      if (menuteObj.value) {
+        moveBird(generateBird());
+      } else {
+        clearInterval(id);
+      }
+    }, 500);
 
-    //   console.log(menuteObj.value)
-    // }, 1000);
-    // }
+    
+    killBird();
+
+    const bomb1 = new bomb();
+    bomb1.img.click(function(e){
+      bomb1.explosion();
+      console.log ( this.offsetTop);
+
+    })
   });
 });
-
+///////////////////////////////////////////////////////////////////////     End Of Mian Function
 const timer = (timeObj) => {
   // timer function
   let id = setInterval(() => {
@@ -68,31 +79,158 @@ const timer = (timeObj) => {
     }
   }, 1000);
 };
+
+/////////////////// Function to  Move Bird
+
 const moveBird = (imgObj) => {
   if (menuteObj.value) {
-    let counter = -imgObj.width();
-    let startHight =
-      Math.random() * (window.innerHeight - imgObj.height() - 100) + 55;
-    console.log(startHight);
+    let position = -1 * parseInt(imgObj.css("width"));
+
     var id = setInterval(() => {
-      if (imgObj.offset().left <= window.innerWidth + imgObj.width()) {
-        imgObj.css({ left: `${counter}px`, top: `${startHight}px` });
-        counter += 10;
+      if (position <= window.innerWidth + imgObj.width()) {
+        position += 10;
+
+        imgObj.css({ left: `${position}px` });
+
         $("html, body").css({
           overflow: "hidden",
         });
       } else {
         imgObj.remove();
-        var newBird = $(`<img src="./images/blackBird.gif" alt="">`).appendTo(
-          "#gameArea"
-        );
-        moveBird(newBird);
       }
-    }, 10);
+    }, 100);
   } else {
     clearInterval(id);
   }
 };
-const generateDinamicBird = function(){
-  let rondomNumber = Math.random()
+
+/////////////// Function to  generate Bird
+const generateBird = function () {
+  let rondomNumber = parseInt(Math.random() * (4 - 1) + 1);
+
+  let bird = $(`<img src="./images/${rondomNumber}.gif" alt="">`).appendTo(
+    "#gameArea"
+  );
+
+  let startHight =
+    Math.random() * (window.innerHeight - bird.height() - 200) + 55;
+
+  let position = -bird.width();
+
+  bird.css({
+    position: "absolute",
+    left: `${position}px`,
+    top: `${startHight}px`,
+  });
+
+  return bird;
+};
+
+const generateDinamicBirds = function () {
+  let numberBirds = parseInt(Math.random() * (10 - 1) + 1);
+  for (let i = 0; i < numberBirds; i++) {
+    let rondomNumber = parseInt(Math.random() * (4 - 1) + 1);
+    let bird = $(`<img src="./images/${rondomNumber}.gif" alt="">`).appendTo(
+      "#gameArea"
+    );
+    let startHight =
+      Math.random() * (window.innerHeight - bird.height() - 200) + 55;
+    let position = bird.width();
+    bird.css({
+      position: "absolute",
+      left: `${position}px`,
+      top: `${startHight}px`,
+    });
+    console.log(bird);
+  }
+  return $("#gameArea > img");
+};
+
+function killBird() {
+  $("body").on("click", "#gameArea > img", function () {
+    //   http://127.0.0.1:5500/images/3.gif
+    // console.log(typeof this.src );
+    switch (this.src) {
+      case "http://127.0.0.1:5500/images/3.gif":
+        score += 5;
+        numberKilled++;
+        break;
+      case "http://127.0.0.1:5500/images/2.gif":
+        score -= 10;
+        numberKilled++;
+        break;
+      case "http://127.0.0.1:5500/images/1.gif":
+        score += 10;
+        numberKilled++;
+        break;
+    }
+    scoreElement.text(`score :  ${score}`);
+    birdsKilled.text(`Birds Killed :   ${numberKilled}`);
+    this.remove();
+  });
 }
+
+class bomb {
+  constructor() {
+    this.left = Math.floor(Math.random() * window.innerWidth);
+
+    this.top = -100;
+
+    this.img =
+      $(`<img id="bomb" src="./images/bomb.gif" width="100px" height="100px"  style="position: absolute; left:${this.left}px;" >
+    `).insertBefore($("#gameArea"));
+
+    if (menuteObj.value) {
+     
+      var id = setInterval(() => {
+        if (this.top <= window.innerHeight + this.img.height()) {
+         this.top += 10;
+  
+          this.img.css({ top: `${this.top}px` });
+  
+          $("html, body").css({
+            overflow: "hidden",
+          });
+        } else {
+          this.img.remove();
+        }
+      }, 100);
+    } else {
+      clearInterval(id);
+    }
+    
+  }
+
+
+  explosion (){
+
+    console.log("mohand");
+
+  }
+  
+
+ 
+}
+
+let killOneBird = function(bird){
+
+  switch (bird.src) {
+    case "http://127.0.0.1:5500/images/3.gif":
+      score += 5;
+      numberKilled++;
+      break;
+    case "http://127.0.0.1:5500/images/2.gif":
+      score -= 10;
+      numberKilled++;
+      break;
+    case "http://127.0.0.1:5500/images/1.gif":
+      score += 10;
+      numberKilled++;
+      break;
+  }
+  scoreElement.text(`score :  ${score}`);
+  birdsKilled.text(`Birds Killed :   ${numberKilled}`);
+  this.remove();
+
+}
+
