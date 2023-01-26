@@ -7,7 +7,7 @@ let user = data.slice(data.indexOf("=", 7) + 1, data.lenght);
 
 let startGameButton = $(".massege > button");
 
-let menuteObj = { value: 10 };
+let menuteObj = { value: 60 };
 
 let score = 0;
 
@@ -32,27 +32,22 @@ $("html, body").css({
 });
 //////////////////////////////////////////////////////////////////////    The Main Function
 $(function () {
-
-
   //    on      page    load   Function    ===========> strart
-
-
-  $(".massege > p").text(
-    `hello ${user} you are in ${level} i hope you enjoy the game !!`
-  );
-
-
-
-
+  if (localStorage.getItem("score")) {
+    $(".massege > p").text(
+      `hello ${user} Again Your Last Score : ${localStorage.getItem("score")}
+        && Your Last Visit in ${localStorage.getItem("lastVisit")} !!`
+    );
+  } else {
+    $(".massege > p").text(
+      `hello ${user} you are in ${level} i hope you enjoy the game !!`
+    );
+  }
 
   startGameButton.click(function () {
-    
-    
     //  when click the start Game button  =======>   Start
 
-
     //  add The Navbar      ===============> start
-
 
     $(".massege").remove();
 
@@ -68,21 +63,37 @@ $(function () {
 
     $("ul").after(`<div id="gameArea" ></div>`);
 
-
-        //  add The Navbar      ===============> End 
-
-
-
-
-
-
+    //  add The Navbar      ===============> End
 
     //  about Call  The    =====    birds   =====    Functions (Move , Generate ,Kill )    ===============> start
 
     setTimeout(() => {
-      
-    }, 10000);
+      $("#gameArea").remove();
+      console.log($("#bomb"));
+      document.querySelectorAll("#bomb").forEach((e) => e.remove());
+      localStorage.setItem("score", score);
+      let date = new Date();
+      let newdate=  new Date()
+      newdate=newdate.toJSON()
+      console.log(newdate)
+      newdate= newdate.slice(0, newdate.indexOf("."));
+      newdate= newdate.replace("T", " // ");
 
+      // localStorage.setItem("lastVisit", `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`);
+      localStorage.setItem("lastVisit", `${newdate}`);
+      if (score > 50) {
+        let endMassege = $(`<div class="massege"> 
+        <p>congratulations ${user} You Are Win Press To Play Again !! </p>
+      <button>Play Again</button></div></div>`).insertAfter("ul");
+      } else {
+        let endMassege = $(`<div class="massege"> 
+        <p>Sorry ${user} You Are You Are Lose Press To Play Again !! </p>
+      <button>Play Again</button></div></div>`).insertAfter("ul");
+      }
+      document.querySelector("body > div > button").onclick = function () {
+        location.reload();
+      };
+    }, 60000);
 
     let id = setInterval(() => {
       if (menuteObj.value) {
@@ -90,15 +101,13 @@ $(function () {
       } else {
         clearInterval(id);
       }
-    }, 500);
+    }, 1000);
 
     killBird();
 
-        //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> End
-
+    //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> End
 
     //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> start
-
 
     setInterval(() => {
       const bomb1 = new bomb();
@@ -107,19 +116,11 @@ $(function () {
         bomb1.explosion(this);
         this.remove(bomb1.img);
       });
-    }, 1000);
+    }, 3000);
 
     //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> End
-
-  
-  
-
-    
-  });   //  when click the start Game button  =======>   End
-
-
-
-});  // on page load   Function===========> End
+  }); //  when click the start Game button  =======>   End
+}); // on page load   Function===========> End
 
 ///////////////////////////////////////////////////////////////////////     End Of Mian Function
 const timer = (timeObj) => {
@@ -158,7 +159,7 @@ const moveBird = (imgObj) => {
 const generateBird = function () {
   let rondomNumber = parseInt(Math.random() * (4 - 1) + 1);
 
-  let bird = $(`<img src="./images/${rondomNumber}.gif" alt="">`).appendTo(
+  let bird = $(`<img max-width="20px"  src="./images/${rondomNumber}.gif" alt="">`).appendTo(
     "#gameArea"
   );
 
@@ -204,6 +205,7 @@ function killBird() {
       case "http://127.0.0.1:5500/images/3.gif":
         score += 5;
         numberKilled++;
+
         break;
       case "http://127.0.0.1:5500/images/2.gif":
         score -= 10;
@@ -212,6 +214,7 @@ function killBird() {
       case "http://127.0.0.1:5500/images/1.gif":
         score += 10;
         numberKilled++;
+
         break;
     }
     scoreElement.text(`score :  ${score}`);
@@ -222,7 +225,6 @@ function killBird() {
 
 class bomb {
   constructor() {
-
     this.left = Math.floor(Math.random() * window.innerWidth);
 
     this.top = -100;
