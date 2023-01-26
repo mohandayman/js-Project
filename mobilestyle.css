@@ -1,5 +1,5 @@
 @media (max-width: 688px) {
-    #massege {
+    .massege {
       width: 70%;
     }
     body > button{
@@ -7,10 +7,10 @@
     }
   } 
   @media (max-width: 410px) {
-    #massege > p{
+    .massege > p{
       padding: 5px;
     }
-    #massege{
+    .massege{
       
     }
     *{

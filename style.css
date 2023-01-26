@@ -115,7 +115,7 @@ body > div > form > button {
   font-weight: bold;
   margin: 5px;
 }
-#massege {
+.massege {
   width: 40%;
   height: 30%;
   background-color: rgb(158 158 158 / 50%);
@@ -130,7 +130,7 @@ body > div > form > button {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-#massege > button {
+.massege > button {
   background-color: transparent;
   margin: 0px 0 10px;
   text-align: center;
@@ -140,7 +140,7 @@ body > div > form > button {
   position: relative;
   margin: 30px;
 }
-#massege > p {
+.massege > p {
   padding: 20px;
 }
 .timerContainer {

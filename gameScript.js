@@ -5,9 +5,9 @@ let level = data.slice(data.indexOf("=") + 1, data.indexOf("&"));
 
 let user = data.slice(data.indexOf("=", 7) + 1, data.lenght);
 
-let startGameButton = $("#massege > button");
+let startGameButton = $(".massege > button");
 
-let menuteObj = { value: 60 };
+let menuteObj = { value: 10 };
 
 let score = 0;
 
@@ -27,14 +27,34 @@ let birdsKilled = $(
 
 let scoreElement = $(`<li class="header" > score :  ${score}</li> `);
 
+$("html, body").css({
+  overflow: "hidden",
+});
 //////////////////////////////////////////////////////////////////////    The Main Function
 $(function () {
-  // on page load
-  $("#massege > p").text(
+
+
+  //    on      page    load   Function    ===========> strart
+
+
+  $(".massege > p").text(
     `hello ${user} you are in ${level} i hope you enjoy the game !!`
   );
+
+
+
+
+
   startGameButton.click(function () {
-    $("#massege").remove();
+    
+    
+    //  when click the start Game button  =======>   Start
+
+
+    //  add The Navbar      ===============> start
+
+
+    $(".massege").remove();
 
     $("ul").prepend(counterShow);
 
@@ -48,6 +68,22 @@ $(function () {
 
     $("ul").after(`<div id="gameArea" ></div>`);
 
+
+        //  add The Navbar      ===============> End 
+
+
+
+
+
+
+
+    //  about Call  The    =====    birds   =====    Functions (Move , Generate ,Kill )    ===============> start
+
+    setTimeout(() => {
+      
+    }, 10000);
+
+
     let id = setInterval(() => {
       if (menuteObj.value) {
         moveBird(generateBird());
@@ -58,35 +94,33 @@ $(function () {
 
     killBird();
 
+        //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> End
+
+
+    //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> start
+
+
     setInterval(() => {
-      
+      const bomb1 = new bomb();
+      bomb1.img.click(function (e) {
+        console.log(e);
+        bomb1.explosion(this);
+        this.remove(bomb1.img);
+      });
+    }, 1000);
+
+    //  about Call  The   ===     Bomb    ===   Functions (constractor , explosion , Remove )    ===============> End
+
+  
+  
+
     
+  });   //  when click the start Game button  =======>   End
 
-    const bomb1 = new bomb();
-    bomb1.img.click(function (e) {
-      bomb1.explosion();
-     
 
-      let birds = $("#gameArea img");
 
-      let killedBirds = Array.from(birds).filter((el) => {
-      
-        return (
-          el.offsetLeft <= this.offsetLeft + 300 &&
-          el.offsetLeft >= this.offsetLeft - 300 &&
-          el.offsetTop <= this.offsetTop + 300 &&
-          el.offsetTop >= this.offsetTop - 300
-        );
-      });
-      console.log(killedBirds);
-      killedBirds.forEach(function (ele) {
-        killOneBird(ele);
-      });
-      this.remove();
-    });
-  }, 5000);
-  });
-});
+});  // on page load   Function===========> End
+
 ///////////////////////////////////////////////////////////////////////     End Of Mian Function
 const timer = (timeObj) => {
   // timer function
@@ -111,10 +145,6 @@ const moveBird = (imgObj) => {
         position += 10;
 
         imgObj.css({ left: `${position}px` });
-
-        $("html, body").css({
-          overflow: "hidden",
-        });
       } else {
         imgObj.remove();
       }
@@ -192,12 +222,15 @@ function killBird() {
 
 class bomb {
   constructor() {
+
     this.left = Math.floor(Math.random() * window.innerWidth);
 
     this.top = -100;
 
-    this.img =
-      $(`<img id="bomb" src="./images/bomb.gif" width="100px" height="100px"  style="position: absolute; left:${this.left}px; top:${this.top}px;" >
+    this.img = $(`<img  id="bomb" src="./images/bomb.gif" 
+      width="100px" height="100px"  
+      style="position: absolute; z-index: 3; 
+      left:${this.left}px; top:${this.top}px;" >
     `).insertBefore($("#gameArea"));
 
     if (menuteObj.value) {
@@ -219,8 +252,24 @@ class bomb {
     }
   }
 
-  explosion() {
-    console.log("mohand");
+  explosion(bomb) {
+    let birds = $("#gameArea img");
+    console.log(birds);
+    let killedBirds = Array.from(birds).filter(function (el) {
+      console.log("bird =  " + el.offsetLeft);
+      console.log("bomb = " + bomb.offsetLeft);
+
+      return (
+        el.offsetLeft <= bomb.offsetLeft + 300 &&
+        el.offsetLeft >= bomb.offsetLeft - 300 &&
+        el.offsetTop <= bomb.offsetTop + 300 &&
+        el.offsetTop >= bomb.offsetTop - 300
+      );
+    });
+    console.log(killedBirds);
+    killedBirds.forEach(function (ele) {
+      killOneBird(ele);
+    });
   }
 }
 
